@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Course",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the course"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 200,
+      "description": "Title of the course"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 1000,
+      "description": "Short description of the course"
+    },
+    "fullDescription": {
+      "type": "string",
+      "description": "Detailed description of the course"
+    },
+    "category": {
+      "type": "string",
+      "description": "Category of the course"
+    },
+    "level": {
+      "type": "string",
+      "enum": ["Beginner", "Intermediate", "Advanced"],
+      "description": "Difficulty level of the course"
+    },
+    "price": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Price of the course in USD"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Average rating of the course"
+    },
+    "reviews": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of reviews"
+    },
+    "students": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of enrolled students"
+    },
+    "duration": {
+      "type": "string",
+      "description": "Total duration of the course"
+    },
+    "lessons": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of lessons in the course"
+    },
+    "thumbnail": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to course thumbnail image"
+    },
+    "instructor": {
+      "$ref": "#/definitions/instructor"
+    },
+    "learningObjectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of learning objectives"
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of prerequisites"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "published", "archived"],
+      "description": "Publication status of the course"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": ["id", "title", "description", "category", "level", "price", "instructor"],
+  "definitions": {
+    "instructor": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string",
+          "format": "uri"
+        },
+        "bio": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name", "title"]
+    }
+  }
+}

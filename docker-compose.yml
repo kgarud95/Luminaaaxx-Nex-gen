@@ -1,0 +1,656 @@
+version: '3.9'
+
+services:
+  # Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    depends_on:
+      - api-gateway
+    networks:
+      - luminax-network
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - FRONTEND_URL=http://localhost:5173
+      - JWT_SECRET=your-jwt-secret-key-here
+    depends_on:
+      - authentication-service
+      - course-catalog-service
+      - authorization-service
+      - payment-processing-service
+      - progress-tracking-service
+    networks:
+      - luminax-network
+
+  # Identity Services
+  authentication-service:
+    build:
+      context: ./services/identity/authentication-service
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - JWT_SECRET=your-jwt-secret-key-here
+      - JWT_EXPIRES_IN=24h
+    networks:
+      - luminax-network
+
+  authorization-service:
+    build:
+      context: ./services/identity/authorization-service
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - PORT=3002
+      - JWT_SECRET=your-jwt-secret-key-here
+    networks:
+      - luminax-network
+
+  # Content Services
+  course-catalog-service:
+    build:
+      context: ./services/content/course-catalog-service
+      dockerfile: Dockerfile
+    ports:
+      - "3011:3011"
+    environment:
+      - NODE_ENV=development
+      - PORT=3011
+    networks:
+      - luminax-network
+
+  # Learning Services
+  progress-tracking-service:
+    build:
+      context: ./services/learning/progress-tracking-service
+      dockerfile: Dockerfile
+    ports:
+      - "3021:3021"
+    environment:
+      - NODE_ENV=development
+      - PORT=3021
+    networks:
+      - luminax-network
+
+  # Commerce Services
+  payment-processing-service:
+    build:
+      context: ./services/commerce/payment-processing-service
+      dockerfile: Dockerfile
+    ports:
+      - "3032:3032"
+    environment:
+      - NODE_ENV=development
+      - PORT=3032
+      - STRIPE_SECRET_KEY=sk_test_your_secret_key_here
+    networks:
+      - luminax-network
+
+  # Additional Identity Services
+  user-profile-service:
+    build:
+      context: ./services/identity/user-profile-service
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+    networks:
+      - luminax-network
+
+  session-management-service:
+    build:
+      context: ./services/identity/session-management-service
+      dockerfile: Dockerfile
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=development
+      - PORT=3004
+    networks:
+      - luminax-network
+
+  oauth-provider-service:
+    build:
+      context: ./services/identity/oauth-provider-service
+      dockerfile: Dockerfile
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=development
+      - PORT=3005
+    networks:
+      - luminax-network
+
+  identity-verification-service:
+    build:
+      context: ./services/identity/identity-verification-service
+      dockerfile: Dockerfile
+    ports:
+      - "3006:3006"
+    environment:
+      - NODE_ENV=development
+      - PORT=3006
+    networks:
+      - luminax-network
+
+  account-recovery-service:
+    build:
+      context: ./services/identity/account-recovery-service
+      dockerfile: Dockerfile
+    ports:
+      - "3007:3007"
+    environment:
+      - NODE_ENV=development
+      - PORT=3007
+    networks:
+      - luminax-network
+
+  audit-logging-service:
+    build:
+      context: ./services/identity/audit-logging-service
+      dockerfile: Dockerfile
+    ports:
+      - "3008:3008"
+    environment:
+      - NODE_ENV=development
+      - PORT=3008
+    networks:
+      - luminax-network
+
+  # Additional Content Services
+  lesson-content-service:
+    build:
+      context: ./services/content/lesson-content-service
+      dockerfile: Dockerfile
+    ports:
+      - "3012:3012"
+    environment:
+      - NODE_ENV=development
+      - PORT=3012
+    networks:
+      - luminax-network
+
+  video-processing-service:
+    build:
+      context: ./services/content/video-processing-service
+      dockerfile: Dockerfile
+    ports:
+      - "3013:3013"
+    environment:
+      - NODE_ENV=development
+      - PORT=3013
+    networks:
+      - luminax-network
+
+  file-storage-service:
+    build:
+      context: ./services/content/file-storage-service
+      dockerfile: Dockerfile
+    ports:
+      - "3014:3014"
+    environment:
+      - NODE_ENV=development
+      - PORT=3014
+    networks:
+      - luminax-network
+
+  content-versioning-service:
+    build:
+      context: ./services/content/content-versioning-service
+      dockerfile: Dockerfile
+    ports:
+      - "3015:3015"
+    environment:
+      - NODE_ENV=development
+      - PORT=3015
+    networks:
+      - luminax-network
+
+  metadata-service:
+    build:
+      context: ./services/content/metadata-service
+      dockerfile: Dockerfile
+    ports:
+      - "3016:3016"
+    environment:
+      - NODE_ENV=development
+      - PORT=3016
+    networks:
+      - luminax-network
+
+  content-moderation-service:
+    build:
+      context: ./services/content/content-moderation-service
+      dockerfile: Dockerfile
+    ports:
+      - "3017:3017"
+    environment:
+      - NODE_ENV=development
+      - PORT=3017
+    networks:
+      - luminax-network
+
+  media-streaming-service:
+    build:
+      context: ./services/content/media-streaming-service
+      dockerfile: Dockerfile
+    ports:
+      - "3018:3018"
+    environment:
+      - NODE_ENV=development
+      - PORT=3018
+    networks:
+      - luminax-network
+
+  content-search-service:
+    build:
+      context: ./services/content/content-search-service
+      dockerfile: Dockerfile
+    ports:
+      - "3019:3019"
+    environment:
+      - NODE_ENV=development
+      - PORT=3019
+    networks:
+      - luminax-network
+
+  content-analytics-service:
+    build:
+      context: ./services/content/content-analytics-service
+      dockerfile: Dockerfile
+    ports:
+      - "3020:3020"
+    environment:
+      - NODE_ENV=development
+      - PORT=3020
+    networks:
+      - luminax-network
+
+  # Additional Learning Services
+  quiz-engine-service:
+    build:
+      context: ./services/learning/quiz-engine-service
+      dockerfile: Dockerfile
+    ports:
+      - "3022:3022"
+    environment:
+      - NODE_ENV=development
+      - PORT=3022
+    networks:
+      - luminax-network
+
+  certificate-service:
+    build:
+      context: ./services/learning/certificate-service
+      dockerfile: Dockerfile
+    ports:
+      - "3023:3023"
+    environment:
+      - NODE_ENV=development
+      - PORT=3023
+    networks:
+      - luminax-network
+
+  learning-path-service:
+    build:
+      context: ./services/learning/learning-path-service
+      dockerfile: Dockerfile
+    ports:
+      - "3024:3024"
+    environment:
+      - NODE_ENV=development
+      - PORT=3024
+    networks:
+      - luminax-network
+
+  gamification-service:
+    build:
+      context: ./services/learning/gamification-service
+      dockerfile: Dockerfile
+    ports:
+      - "3025:3025"
+    environment:
+      - NODE_ENV=development
+      - PORT=3025
+    networks:
+      - luminax-network
+
+  study-analytics-service:
+    build:
+      context: ./services/learning/study-analytics-service
+      dockerfile: Dockerfile
+    ports:
+      - "3026:3026"
+    environment:
+      - NODE_ENV=development
+      - PORT=3026
+    networks:
+      - luminax-network
+
+  assignment-service:
+    build:
+      context: ./services/learning/assignment-service
+      dockerfile: Dockerfile
+    ports:
+      - "3027:3027"
+    environment:
+      - NODE_ENV=development
+      - PORT=3027
+    networks:
+      - luminax-network
+
+  discussion-forum-service:
+    build:
+      context: ./services/learning/discussion-forum-service
+      dockerfile: Dockerfile
+    ports:
+      - "3028:3028"
+    environment:
+      - NODE_ENV=development
+      - PORT=3028
+    networks:
+      - luminax-network
+
+  live-session-service:
+    build:
+      context: ./services/learning/live-session-service
+      dockerfile: Dockerfile
+    ports:
+      - "3029:3029"
+    environment:
+      - NODE_ENV=development
+      - PORT=3029
+    networks:
+      - luminax-network
+
+  # Additional Commerce Services
+  pricing-service:
+    build:
+      context: ./services/commerce/pricing-service
+      dockerfile: Dockerfile
+    ports:
+      - "3031:3031"
+    environment:
+      - NODE_ENV=development
+      - PORT=3031
+    networks:
+      - luminax-network
+
+  subscription-service:
+    build:
+      context: ./services/commerce/subscription-service
+      dockerfile: Dockerfile
+    ports:
+      - "3033:3033"
+    environment:
+      - NODE_ENV=development
+      - PORT=3033
+    networks:
+      - luminax-network
+
+  invoice-service:
+    build:
+      context: ./services/commerce/invoice-service
+      dockerfile: Dockerfile
+    ports:
+      - "3034:3034"
+    environment:
+      - NODE_ENV=development
+      - PORT=3034
+    networks:
+      - luminax-network
+
+  refund-service:
+    build:
+      context: ./services/commerce/refund-service
+      dockerfile: Dockerfile
+    ports:
+      - "3035:3035"
+    environment:
+      - NODE_ENV=development
+      - PORT=3035
+    networks:
+      - luminax-network
+
+  financial-reporting-service:
+    build:
+      context: ./services/commerce/financial-reporting-service
+      dockerfile: Dockerfile
+    ports:
+      - "3036:3036"
+    environment:
+      - NODE_ENV=development
+      - PORT=3036
+    networks:
+      - luminax-network
+
+  coupon-service:
+    build:
+      context: ./services/commerce/coupon-service
+      dockerfile: Dockerfile
+    ports:
+      - "3037:3037"
+    environment:
+      - NODE_ENV=development
+      - PORT=3037
+    networks:
+      - luminax-network
+
+  revenue-analytics-service:
+    build:
+      context: ./services/commerce/revenue-analytics-service
+      dockerfile: Dockerfile
+    ports:
+      - "3038:3038"
+    environment:
+      - NODE_ENV=development
+      - PORT=3038
+    networks:
+      - luminax-network
+
+  # AI Domain Services
+  recommendation-engine-service:
+    build:
+      context: ./services/ai/recommendation-engine-service
+      dockerfile: Dockerfile
+    ports:
+      - "3041:3041"
+    environment:
+      - NODE_ENV=development
+      - PORT=3041
+    networks:
+      - luminax-network
+
+  chatbot-service:
+    build:
+      context: ./services/ai/chatbot-service
+      dockerfile: Dockerfile
+    ports:
+      - "3042:3042"
+    environment:
+      - NODE_ENV=development
+      - PORT=3042
+    networks:
+      - luminax-network
+
+  # Analytics Domain Services
+  user-behavior-analytics-service:
+    build:
+      context: ./services/analytics/user-behavior-analytics-service
+      dockerfile: Dockerfile
+    ports:
+      - "3051:3051"
+    environment:
+      - NODE_ENV=development
+      - PORT=3051
+    networks:
+      - luminax-network
+
+  # Communication Domain Services
+  email-service:
+    build:
+      context: ./services/communication/email-service
+      dockerfile: Dockerfile
+    ports:
+      - "3061:3061"
+    environment:
+      - NODE_ENV=development
+      - PORT=3061
+    networks:
+      - luminax-network
+
+  push-notification-service:
+    build:
+      context: ./services/communication/push-notification-service
+      dockerfile: Dockerfile
+    ports:
+      - "3062:3062"
+    environment:
+      - NODE_ENV=development
+      - PORT=3062
+    networks:
+      - luminax-network
+
+  # Platform Domain Services
+  service-discovery-service:
+    build:
+      context: ./services/platform/service-discovery-service
+      dockerfile: Dockerfile
+    ports:
+      - "3072:3072"
+    environment:
+      - NODE_ENV=development
+      - PORT=3072
+    networks:
+      - luminax-network
+
+  configuration-service:
+    build:
+      context: ./services/platform/configuration-service
+      dockerfile: Dockerfile
+    ports:
+      - "3073:3073"
+    environment:
+      - NODE_ENV=development
+      - PORT=3073
+    networks:
+      - luminax-network
+
+  monitoring-service:
+    build:
+      context: ./services/platform/monitoring-service
+      dockerfile: Dockerfile
+    ports:
+      - "3075:3075"
+    environment:
+      - NODE_ENV=development
+      - PORT=3075
+    networks:
+      - luminax-network
+
+  health-check-service:
+    build:
+      context: ./services/platform/health-check-service
+      dockerfile: Dockerfile
+    ports:
+      - "3076:3076"
+    environment:
+      - NODE_ENV=development
+      - PORT=3076
+    networks:
+      - luminax-network
+
+  # Database Services
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=luminax
+      - POSTGRES_USER=luminax
+      - POSTGRES_PASSWORD=luminax123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - luminax-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - luminax-network
+
+  mongodb:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=luminax
+      - MONGO_INITDB_ROOT_PASSWORD=luminax123
+      - MONGO_INITDB_DATABASE=luminax
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - luminax-network
+
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - luminax-network
+
+  # Infrastructure Services
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - frontend
+      - api-gateway
+    networks:
+      - luminax-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  mongodb_data:
+  elasticsearch_data:
+
+networks:
+  luminax-network:
+    driver: bridge

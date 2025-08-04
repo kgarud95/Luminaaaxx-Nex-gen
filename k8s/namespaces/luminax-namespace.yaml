@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: luminax
+  labels:
+    name: luminax
+    environment: production
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: luminax-dev
+  labels:
+    name: luminax-dev
+    environment: development
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: luminax-staging
+  labels:
+    name: luminax-staging
+    environment: staging

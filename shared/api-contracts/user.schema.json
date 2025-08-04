@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the user"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Full name of the user"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address of the user"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["student", "instructor", "admin"],
+      "description": "Role of the user in the system"
+    },
+    "avatar": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to user's avatar image"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the user was created"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the user was last updated"
+    }
+  },
+  "required": ["id", "name", "email", "role"],
+  "additionalProperties": false
+}
